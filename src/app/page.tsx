@@ -7,7 +7,7 @@ import { MainContent } from "./main-content"
 
 export default function Page() {
   const [active, setActive] = useState("Home")
-
+  
   return (
     <SidebarProvider>
       <AppSidebar active={active} onSelect={setActive} />
