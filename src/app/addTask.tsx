@@ -26,7 +26,7 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 w-full h-full z-50 bg-black/30 animate-bgPopOut"
+      className="fixed inset-0 z-[60] h-full w-full bg-black/30 animate-bgPopOut"
     >
       <div
         onClick={(e) => e.stopPropagation()}

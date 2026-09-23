@@ -11,12 +11,22 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 export function AppSidebar({ active, onSelect, }: { active: string, onSelect: (title: string) => void }) {
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const openAddDialog = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+    setShowAddDialog(true);
+  };
+
   const demoNavItems = [
-    { title: "Add task", icon: <IoIosAddCircle className="w-7! h-7!" />, onSelect: () => { setShowAddDialog(true) } },
+    { title: "Add task", icon: <IoIosAddCircle className="w-7! h-7!" />, onSelect: openAddDialog },
     { title: "Today", icon: <FiInbox className="w-5! h-5!" />, onSelect: () => {} },
     { title: "Upcoming", icon: <FiInbox className="w-5! h-5!" />, onSelect: () => {} },
   ];
