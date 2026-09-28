@@ -7,6 +7,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { useTasksContext } from "../taskContext"
 import {
   Popover,
   PopoverContent,
@@ -20,13 +21,20 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 
-export function AddDialog({ onClose }: { onClose: () => void }) {
-  const [date, setDate] = useState<Date>()
+function formatDueDate(date?: Date | null): string {
+  return date ? format(date, "PPP") : "No due date"
+}
 
+export function AddDialog({ onClose }: { onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [date, setDate] = useState<Date>();
+  const [message, setMessage] = useState("");
+
+  const { tasks, addTask } = useTasksContext();
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-[60] h-full w-full bg-black/30 animate-bgPopOut"
+      className="fixed inset-0 z-30 h-full w-full bg-black/30 animate-bgPopOut"
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -43,11 +51,11 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <FieldSet className="w-full flex flex-col justify-between gap-5">
             <FieldGroup className="flex flex-col gap-5">
-              <Field className="gap-1 w-full max-w-md">
+              <Field className="gap-1 w-full">
                 <FieldLabel className="text-lg!" htmlFor="taskName">
                   Task Name
                 </FieldLabel>
-                <Input id="taskName" type="text" placeholder="Do laundry" className="px-4 h-12 text-lg! " />
+                <Input id="taskName" type="text" placeholder="Do laundry" onChange={(e) => setName(e.target.value)} className="px-4 h-12 w-full text-lg!" />
                 <FieldDescription>
                   Choose a unique name for your task.
                 </FieldDescription>
@@ -57,7 +65,8 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
                   Date
                 </FieldLabel>
                 <Popover>
-                  <PopoverTrigger render={<Button variant="outline" id="date-picker-simple" className="h-12 px-4  text-lg! justify-start font-normal">{date ? format(date, "PPP") : <><CalendarIcon/> <div>Pick a date</div></>}</Button>} />
+                  <PopoverTrigger render={<Button variant="outline" id="date-picker-simple" className="h-12 px-4 z-50 text-lg! justify-start font-normal">
+                    {date ? format(date, "PPP") : <><CalendarIcon/> <div>Pick a date</div></>}</Button>} />
                   <PopoverContent className=" p-0" align="start">
                     <Calendar
                       mode="single"
@@ -72,7 +81,7 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
                 <FieldLabel htmlFor="textarea-message" className="text-lg!">
                   Message
                 </FieldLabel>
-                <Textarea id="textarea-message" className="text-lg!" placeholder="Type your message here." />
+                <Textarea id="textarea-message" className="text-lg!" onChange={(e) => setMessage(e.target.value)} placeholder="Type your message here." />
                 <FieldDescription>Enter your message above.</FieldDescription>
             </Field>
             </FieldGroup>
@@ -82,7 +91,9 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
         {/* Footer */}
         <div className="flex items-center justify-end gap-2 border-t border-gray-200 px-6 py-4 shrink-0">
           <Button onClick={onClose} className="hover:bg-red-400" variant="outline">Cancel</Button>
-          <Button onClick={onClose} className="hover:bg-green-400" variant="outline">Save</Button>
+          <Button onClick={() => {onClose(); 
+            addTask({ name, date: date!, message })
+          }} className="hover:bg-green-400" variant="outline">Save</Button>
         </div>
       </div>
     </div>

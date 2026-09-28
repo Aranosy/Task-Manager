@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FiInbox } from "react-icons/fi";
 import { IoIosAddCircle } from "react-icons/io";
-import { AddDialog } from "./addTask";
+import { AddDialog } from "./taskLogic/addTask";
 import {
   Sidebar,
   SidebarContent,
