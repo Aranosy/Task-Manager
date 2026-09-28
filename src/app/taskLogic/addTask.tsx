@@ -21,22 +21,22 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 
-function formatDueDate(date?: Date | null): string {
-  return date ? format(date, "PPP") : "No due date"
-}
-
 export function AddDialog({ onClose }: { onClose: () => void }) {
   const [name, setName] = useState("");
   const [date, setDate] = useState<Date>();
   const [message, setMessage] = useState("");
 
-  const { tasks, addTask } = useTasksContext();
+  const { addTask } = useTasksContext();
   return (
     <div
       onClick={onClose}
       className="fixed inset-0 z-30 h-full w-full bg-black/30 animate-bgPopOut"
     >
-      <div
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
         onClick={(e) => e.stopPropagation()}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
         bg-white w-[95vw] max-w-lg h-[90vh] max-h-[500px] flex flex-col z-40 rounded-lg overflow-hidden shadow-lg
@@ -55,7 +55,7 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
                 <FieldLabel className="text-lg!" htmlFor="taskName">
                   Task Name
                 </FieldLabel>
-                <Input id="taskName" type="text" placeholder="Do laundry" onChange={(e) => setName(e.target.value)} className="px-4 h-12 w-full text-lg!" />
+                <Input id="taskName" required  type="text" placeholder="Do laundry" onChange={(e) => setName(e.target.value)} className="px-4 h-12 w-full text-lg!" />
                 <FieldDescription>
                   Choose a unique name for your task.
                 </FieldDescription>
@@ -66,7 +66,7 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
                 </FieldLabel>
                 <Popover>
                   <PopoverTrigger render={<Button variant="outline" id="date-picker-simple" className="h-12 px-4 z-50 text-lg! justify-start font-normal">
-                    {date ? format(date, "PPP") : <><CalendarIcon/> <div>Pick a date</div></>}</Button>} />
+                    {date ? format(date, "MMMM d, yyyy") : <><CalendarIcon/> <div>Pick a date</div></>}</Button>} />
                   <PopoverContent className=" p-0" align="start">
                     <Calendar
                       mode="single"
@@ -90,12 +90,13 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-2 border-t border-gray-200 px-6 py-4 shrink-0">
-          <Button onClick={onClose} className="hover:bg-red-400" variant="outline">Cancel</Button>
-          <Button onClick={() => {onClose(); 
+          <Button onClick={onClose} type="button" className="hover:bg-red-400" variant="outline">Cancel</Button>
+          <Button onClick={() => {
+          if (name)  
             addTask({ name, date: date!, message })
-          }} className="hover:bg-green-400" variant="outline">Save</Button>
+          }} type="submit" className="hover:bg-green-400" variant="outline">Save</Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

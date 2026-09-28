@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { TaskCard } from "./taskCard"
+import { format } from "date-fns"
 
 
 export function RenderTask({ name, date, message }: { name: string; date: Date | null; message: string }) {
@@ -10,7 +11,7 @@ export function RenderTask({ name, date, message }: { name: string; date: Date |
     return (<TaskCard
                 name={name}
                 description={message}
-                date={date ? date.toString() : "No due date"}
+                date={date ? format(date, "MMMM d, yyyy") : "No due date"}
                 done={done}
                 onDoneChange={setDone}
               />
