@@ -12,7 +12,9 @@ import { AddDialog } from "./taskLogic/addTask"
 export function MainContent({ active }: { active: string }) {
   const [done, setDone] = useState(false)
   const { tasks } = useTasksContext();
-    // const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showAddDialog, setShowAddDialog] = useState(false);
+
+  
 
   return (
     <main className="flex flex-1 flex-col">
@@ -22,10 +24,11 @@ export function MainContent({ active }: { active: string }) {
       </header>
       <div className="flex-1 p-4 sm:p-6">
         <div className="w-full gap-1 flex flex-col">
-          <Button className="self-start text-xl!" size="lg" variant="ghost" onClick={() => AddDialog({ onClose: () => {} })}>
+          <Button className="self-start text-xl!" size="lg" variant="ghost" onClick={() => setShowAddDialog(true)}>
             <Plus className="w-5! h-5!" />
             Add Task
           </Button>
+          {showAddDialog && <AddDialog onClose={() => setShowAddDialog(false)} />}
           {tasks.map((task, index) => (
             <RenderTask key={index} name={task.name} date={task.date} message={task.message} />
           ))}
