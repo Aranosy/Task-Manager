@@ -67,13 +67,19 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
                 <Popover>
                   <PopoverTrigger render={<Button variant="outline" id="date-picker-simple" className="h-12 px-4 z-50 text-lg! justify-start font-normal">
                     {date ? format(date, "MMMM d, yyyy") : <><CalendarIcon/> <div>Pick a date</div></>}</Button>} />
-                  <PopoverContent className=" p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={setDate}
-                      defaultMonth={date}
-                    />
+                  <PopoverContent
+                    className="w-auto max-w-[calc(100vw-1rem)] max-h-[var(--available-height)] overflow-auto p-0"
+                    align="start"
+                    collisionAvoidance={{ side: "flip", align: "shift" }}
+                  >
+                    <div className="overflow-x-auto max-w-[100vw] sm:max-w-none">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        defaultMonth={date}
+                      />
+                    </div>
                   </PopoverContent>
                 </Popover>
               </Field>
@@ -90,11 +96,11 @@ export function AddDialog({ onClose }: { onClose: () => void }) {
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-2 border-t border-gray-200 px-6 py-4 shrink-0">
-          <Button onClick={onClose} type="button" className="hover:bg-red-400" variant="outline">Cancel</Button>
+          <Button onClick={onClose} type="button" className="hover:bg-red-400 hover:text-white" variant="outline">Cancel</Button>
           <Button onClick={() => {
           if (name)  
             addTask({ name, date: date!, message })
-          }} type="submit" className="hover:bg-green-400" variant="outline">Save</Button>
+          }} type="submit" className="hover:bg-green-400 hover:text-white" variant="outline">Save</Button>
         </div>
       </form>
     </div>
