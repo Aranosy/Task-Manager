@@ -51,7 +51,7 @@ export function AppSidebar({ active, onSelect, }: { active: string, onSelect: (t
                 className="mr-3 w-auto text-lg"
                 key={item.title}
                 isActive={active === item.title}
-                onClick={() => {onSelect(item.title); item.onSelect()}}
+                onClick={() => {if (item.title !== "Add task") onSelect(item.title); item.onSelect()}}
               >
                 <span className="w-6 h-6 flex items-center justify-center shrink-0">
                   {item.icon}

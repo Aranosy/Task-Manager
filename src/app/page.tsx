@@ -6,7 +6,7 @@ import { AppSidebar } from "./sidebar"
 import { MainContent } from "./main-content"
   import { TasksProvider } from "./taskContext"
 export default function Page() {
-  const [active, setActive] = useState("Home")
+  const [active, setActive] = useState("Today")
 
   return (
     <SidebarProvider>
